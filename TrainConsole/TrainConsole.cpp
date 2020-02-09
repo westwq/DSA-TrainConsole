@@ -96,8 +96,6 @@ void loadRoutes()
 			frm = to;
 		}
 	}
-
-	stations.print();
 }
 
 void loadInterchanges()
@@ -105,8 +103,23 @@ void loadInterchanges()
 	list<string> contents = loadFile(PATH + "Interchanges.csv");
 
 	for (std::list<string>::iterator it = contents.begin(); it != contents.end(); ++it) {
-
+		string line = *it;
+		string token[10];
+		int size = 0;
+		stringstream iss(line);
+		while (getline(iss, token[size++], ',')); //loaded all connecting stations at interchange
+		
+		//adding edge for interchange
+		for (int i = 0; i < --size; i++)
+		{
+			for (int j = i + 1; j < size; j++)
+			{
+				stations.addEdge(token[i], token[j], 0);
+			}
+		}
 	}
+
+	stations.print();
 }
 
 void loadFares()
