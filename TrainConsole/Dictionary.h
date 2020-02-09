@@ -12,11 +12,19 @@ typedef string ItemType;
 class Dictionary
 {
 private:
+	struct Edge;
 	struct Node
 	{
 		KeyType	 key;   // search key
 		ItemType item;	// data item
-		Node     *next;	// pointer pointing to next item with same search key
+		Edge     *next;	// pointer pointing to next item with same search key
+	};
+
+	struct Edge
+	{
+		int distance;
+		Node *item; // next vertex
+		Edge *next; // store edge as linked list
 	};
 
 	Node *items[MAX_SIZE];

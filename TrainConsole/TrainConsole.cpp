@@ -4,11 +4,23 @@
 #include "pch.h"
 #include <iostream>
 #include "Dictionary.h"
+#include <string>
+#include <fstream>
+#include <list>
+#include <sstream>
 
 using namespace std;
 
 void displayMenu();
 void loadData();
+list<string> loadFile(string);
+void loadStations();
+void loadRoutes();
+void loadInterchanges();
+void loadFares();
+
+const string PATH = "data\\Simple\\";
+
 Dictionary stations;
 
 int main()
@@ -48,8 +60,56 @@ int main()
 
 void loadData()
 {
-	stations;
-	stations.add("EW01", "Test");
+	loadStations();
+}
+
+void loadStations()
+{
+	list<string> contents = loadFile(PATH + "Stations.csv");
+
+	for (std::list<string>::iterator it = contents.begin(); it != contents.end(); ++it) {
+		string token[2];
+		int i = 0;
+		stringstream iss(*it);
+		while (getline(iss, token[i++], ','));
+		stations.add(token[0], token[1]);
+	}
+}
+
+void loadRoutes()
+{
+	list<string> contents = loadFile(PATH + "Routes.csv");
+
+	for (std::list<string>::iterator it = contents.begin(); it != contents.end(); ++it) {
+
+	}
+}
+
+void loadInterchanges()
+{
+	list<string> contents = loadFile(PATH + "Stations.csv");
+}
+
+void loadFares()
+{
+	list<string> contents = loadFile(PATH + "Stations.csv");
+}
+
+list<string> loadFile(string file)
+{
+	ifstream infile;
+	list<string> lines;
+	string line;
+
+	infile.open(file);
+	while (getline(infile,line))
+	{
+		lines.push_back(line);
+	}
+
+	infile.close();
+
+	return lines;
 }
 
 void displayMenu()

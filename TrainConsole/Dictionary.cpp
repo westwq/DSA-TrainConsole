@@ -52,9 +52,12 @@ int Dictionary::hash(KeyType key)
 	{
 		if (charvalue(key[i]) < 0)  // not an alphabet
 		{
-			total *= 10 + key[i] - '0';
+			total = total*10 + key[i] - '0';
 		}
-		total = total * 26 + charvalue(key[i]);
+		else
+		{
+			total = total * 26 + charvalue(key[i]);
+		}
 
 		total %= MAX_SIZE;
 	}
@@ -77,27 +80,30 @@ bool Dictionary::add(KeyType newKey, ItemType newItem)
 	}
 	else // collision
 	{
-		//		cout << "Collision at " << index << " - " << newKey << " and " << items[index]->key << endl;
-				// check for duplicate key while traversing list
-		Node *current = items[index];
+		cout << "Collision at " << index << " - " << newKey << " and " << items[index]->key << endl;
+		return false;
 
-		if (current->key == newKey) // duplicate key
-			return false;
+		////		cout << "Collision at " << index << " - " << newKey << " and " << items[index]->key << endl;
+		//		// check for duplicate key while traversing list
+		//Node *current = items[index];
 
-		while (current->next != NULL)
-		{
-			cout << current->key << endl;
-			current = current->next;
-			if (current->item == newItem) // duplicate key
-				return false;
-		}
+		//if (current->key == newKey) // duplicate key
+		//	return false;
 
-		// Add new node to end of list
-		Node *newNode = new Node;
-		newNode->key = newKey;
-		newNode->item = newItem;
-		newNode->next = NULL;
-		current->next = newNode;
+		//while (current->next != NULL)
+		//{
+		//	cout << current->key << endl;
+		//	current = current->next;
+		//	if (current->item == newItem) // duplicate key
+		//		return false;
+		//}
+
+		//// Add new node to end of list
+		//Node *newNode = new Node;
+		//newNode->key = newKey;
+		//newNode->item = newItem;
+		//newNode->next = NULL;
+		//current->next = newNode;
 	}
 
 	size++;
