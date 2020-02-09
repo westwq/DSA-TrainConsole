@@ -22,9 +22,10 @@ Dictionary::~Dictionary()
 			Node *previous = NULL;
 			while (current != NULL)
 			{
-				previous = current;
-				current = current->next;
-				delete previous;
+				//previous = current;
+				//current = current->next;
+				//delete previous;
+				delete current;
 			}
 		}
 	}
@@ -66,6 +67,53 @@ int Dictionary::hash(KeyType key)
 	return total;
 }
 
+void Dictionary::insertEdge(int fromIndex, int toIndex, int distance)
+{
+	Edge *newEdge = new Edge;
+	newEdge->distance = distance;
+	newEdge->item = items[toIndex];
+	newEdge->next = NULL;
+
+	if (items[fromIndex]->edge == NULL) // no edge
+	{
+		items[fromIndex]->edge = newEdge;
+	}
+	else
+	{
+		//insertion sort
+		Edge *current = items[fromIndex]->edge;
+
+		if (current->distance > distance) //new distance shorter
+		{
+			newEdge->next = current;
+			items[fromIndex]->edge = newEdge;
+		}
+		else
+		{
+			while (current->next != NULL && current->next->distance < distance)
+				current = current->next;
+
+			newEdge->next = current->next;
+			current->next = newEdge;
+		}
+	}
+}
+
+// add edge to item with the specified key in the Dictionary
+bool Dictionary::addEdge(KeyType fromKey, KeyType toKey, int distance)
+{
+	int fromIndex = hash(fromKey);
+	int toIndex = hash(toKey);
+	
+	if (items[fromIndex] == NULL || items[toIndex] == NULL)
+		return false;
+
+	insertEdge(fromIndex, toIndex, distance);
+	insertEdge(toIndex, fromIndex, distance);
+
+	return true;
+}
+
 // add a new item with a specified key in the Dictionary
 bool Dictionary::add(KeyType newKey, ItemType newItem)
 {
@@ -76,7 +124,7 @@ bool Dictionary::add(KeyType newKey, ItemType newItem)
 		items[index] = new Node;
 		items[index]->key = newKey;
 		items[index]->item = newItem;
-		items[index]->next = NULL;
+		items[index]->edge = NULL;
 	}
 	else // collision
 	{
@@ -122,12 +170,13 @@ void Dictionary::remove(KeyType key)
 
 		if (current->key == key)
 		{
-			items[index] = items[index]->next;
+			//items[index] = items[index]->next;
 			delete current;
 			size--;
 		}
-		else
+		/*else
 		{
+			//no collisions
 			while ((current->next != NULL) && (current->next->key != key))
 			{
 				current = current->next;
@@ -139,7 +188,7 @@ void Dictionary::remove(KeyType key)
 				delete temp;
 				size--;
 			}
-		}
+		}*/
 	}
 }
 
@@ -153,8 +202,8 @@ ItemType Dictionary::get(KeyType key)
 	{
 		Node *current = items[index];
 
-		while ((current->key != key) && (current != NULL))
-			current = current->next;
+		//while ((current->key != key) && (current != NULL))
+		//	current = current->next;
 
 		if (current != NULL)
 			return current->item;
@@ -201,11 +250,16 @@ void Dictionary::print()
 		if (items[i] != NULL)
 		{
 			Node *current = items[i];
-			while (current)
+			cout << current->key << " - " << current->item;
+
+			Edge *edge = current->edge;
+			while (edge)
 			{
-				cout << current->key << " - " << current->item << endl;
-				current = current->next;
+				cout << " || " << edge->item->key << "(" << edge->distance << ")";
+				edge = edge->next;
 			}
+
+			cout << endl;
 		}
 }
 

@@ -61,6 +61,9 @@ int main()
 void loadData()
 {
 	loadStations();
+	loadRoutes();
+	loadInterchanges();
+	loadFares();
 }
 
 void loadStations()
@@ -81,18 +84,38 @@ void loadRoutes()
 	list<string> contents = loadFile(PATH + "Routes.csv");
 
 	for (std::list<string>::iterator it = contents.begin(); it != contents.end(); ++it) {
-
+		string frm;
+		string to;
+		string dist;
+		stringstream iss(*it);
+		stringstream iss2(*(++it));
+		getline(iss, frm, ',');
+		while (getline(iss, to, ',') && getline(iss2, dist, ','))
+		{
+			stations.addEdge(frm, to, stoi(dist));
+			frm = to;
+		}
 	}
+
+	stations.print();
 }
 
 void loadInterchanges()
 {
-	list<string> contents = loadFile(PATH + "Stations.csv");
+	list<string> contents = loadFile(PATH + "Interchanges.csv");
+
+	for (std::list<string>::iterator it = contents.begin(); it != contents.end(); ++it) {
+
+	}
 }
 
 void loadFares()
 {
-	list<string> contents = loadFile(PATH + "Stations.csv");
+	list<string> contents = loadFile(PATH + "Fares.csv");
+
+	for (std::list<string>::iterator it = contents.begin(); it != contents.end(); ++it) {
+
+	}
 }
 
 list<string> loadFile(string file)

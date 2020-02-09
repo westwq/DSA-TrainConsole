@@ -17,7 +17,7 @@ private:
 	{
 		KeyType	 key;   // search key
 		ItemType item;	// data item
-		Edge     *next;	// pointer pointing to next item with same search key
+		Edge     *edge;	// pointer pointing to next item with same search key
 	};
 
 	struct Edge
@@ -30,6 +30,8 @@ private:
 	Node *items[MAX_SIZE];
 	int  size;			// number of items in the Dictionary
 
+	void insertEdge(int fromIndex, int toIndex, int distance);
+
 public:
 
 	// constructor
@@ -39,6 +41,9 @@ public:
 	~Dictionary();
 
 	int hash(KeyType key);
+
+	bool addEdge(KeyType fromKey, KeyType ToKey, int distance);
+
 
 	// add a new item with the specified key to the Dictionary
 	// pre : none
