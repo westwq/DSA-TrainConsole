@@ -18,6 +18,10 @@ void loadStations();
 void loadRoutes();
 void loadInterchanges();
 void loadFares();
+void displayLine();
+void displayStation();
+void searchRoute();
+void searchShortestRoute();
 
 const string PATH = "data\\Simple\\";
 
@@ -39,11 +43,16 @@ int main()
 		switch (option)
 		{
 			case '1':
+				displayLine(); break;
 			case '2':
+				displayStation(); break;
 			case '3':
+
 			case '4':
-				cout << option << endl;
+				searchRoute(); break;
 				break;
+			case '6':
+				searchShortestRoute(); break;
 			case 'Q':
 			case 'q':
 				cout << "Goodbye!" << endl;
@@ -158,6 +167,26 @@ void displayMenu()
 	cout << "(5) Add new line" << endl;
 	cout << "(6) Search for shortest route" << endl;
 	cout << "(7) Search for 3 feasible routes" << endl;
+}
+
+void displayLine()
+{
+
+}
+
+void displayStation()
+{
+
+}
+
+void searchRoute()
+{
+
+}
+
+void searchShortestRoute()
+{
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
